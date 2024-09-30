@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "@/prisma/client";
 import bcrypt from 'bcrypt'
+import GitHubProvider from "next-auth/providers/github";
 
 export const authOtpions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -25,10 +26,15 @@ export const authOtpions: NextAuthOptions = {
         return passwordMatch ? user : null
       },
     }),
-      GoogleProvider({
+    GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID!,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-      })
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!
+    })
+  
   ],
   session: {
     strategy: 'jwt'
